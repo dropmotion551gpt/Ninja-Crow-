@@ -1,4 +1,4 @@
-name: Build Ninja Crow APK
+name: Build Ninja Crow
 
 on:
   push:
@@ -29,8 +29,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Android SDK licenses (runner ka SDK use hota hai)
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME" || true
+          ls "$ANDROID_HOME/platforms" || true
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0" > /dev/null 2>&1 || true
 
       - name: Check game file
         run: |
@@ -71,28 +76,33 @@ jobs:
           npx cap add android
           ls android/app/src/main/res
 
-      - name: App icon from branding (optional)
+      - name: Ninja Crow logo as app icon
         continue-on-error: true
         run: |
           ICON=assets/branding/ninja-crow-app-icon-1024.png
-          if [ -f "$ICON" ]; then
-            sudo apt-get install -y imagemagick >/dev/null 2>&1 || true
-            RES=android/app/src/main/res
-            mkdir -p /tmp/icons
-            for d in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
-              n=${d%%:*}; s=${d##*:}
-              convert "$ICON" -resize ${s}x${s} /tmp/icons/$n.png
-            done
-            rm -rf $RES/mipmap-anydpi-v26
-            for n in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
-              mkdir -p $RES/mipmap-$n
-              rm -f $RES/mipmap-$n/ic_launcher*.png $RES/mipmap-$n/ic_launcher*.webp
-              cp /tmp/icons/$n.png $RES/mipmap-$n/ic_launcher.png
-              cp /tmp/icons/$n.png $RES/mipmap-$n/ic_launcher_round.png
-            done
-          else
-            echo "icon file nahi mili, default icon use hoga"
+          LOGO=assets/branding/ninja-crow-logo-transparent.png
+          [ -f "$ICON" ] || { echo "icon file nahi mili, default icon use hoga"; exit 0; }
+          [ -f "$LOGO" ] || LOGO="$ICON"
+          sudo apt-get install -y imagemagick > /dev/null 2>&1 || true
+          RES=android/app/src/main/res
+          mkdir -p /tmp/icons
+          for d in mdpi:48:108 hdpi:72:162 xhdpi:96:216 xxhdpi:144:324 xxxhdpi:192:432; do
+            IFS=: read n s f <<< "$d"
+            inner=$((f*62/100))
+            convert "$ICON" -resize ${s}x${s} /tmp/icons/$n.png
+            convert -size ${f}x${f} xc:none \( "$LOGO" -resize ${inner}x${inner} \) -gravity center -composite /tmp/icons/$n-fg.png
+          done
+          for n in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p $RES/mipmap-$n
+            rm -f $RES/mipmap-$n/ic_launcher*.webp
+            cp /tmp/icons/$n.png $RES/mipmap-$n/ic_launcher.png
+            cp /tmp/icons/$n.png $RES/mipmap-$n/ic_launcher_round.png
+            cp /tmp/icons/$n-fg.png $RES/mipmap-$n/ic_launcher_foreground.png
+          done
+          if [ -f $RES/values/ic_launcher_background.xml ]; then
+            sed -i 's/#FFFFFF/#0F172A/I' $RES/values/ic_launcher_background.xml
           fi
+          echo "icon ready"
 
       - name: Landscape and fullscreen
         run: |
@@ -105,26 +115,29 @@ jobs:
       - name: Sync web files into Android
         run: npx cap sync android
 
-      - name: Build debug APK
+      - name: Build APK
         working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Upload APK (Artifacts)
+      - name: Name the APK Ninja-Crow
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Ninja-Crow.apk
+
+      - name: Upload Ninja Crow APK
         uses: actions/upload-artifact@v4
         with:
-          name: Ninja-Crow-APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: Ninja-Crow
+          path: Ninja-Crow.apk
           if-no-files-found: error
 
-      - name: Publish APK in Releases
+      - name: Publish in Releases
         continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.run_number }}
-          name: Ninja Crow build ${{ github.run_number }}
-          files: android/app/build/outputs/apk/debug/*.apk
+          tag_name: ninja-crow-${{ github.run_number }}
+          name: Ninja Crow
+          files: Ninja-Crow.apk
 
       - name: Upload Gradle reports if failed
         if: failure()
