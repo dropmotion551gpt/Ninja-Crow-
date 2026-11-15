@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="650" viewBox="0 0 1800 650">
+<defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFF0B4"/><stop offset=".55" stop-color="#D8B65C"/><stop offset="1" stop-color="#9C7428"/></linearGradient>
+ <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101A35"/><stop offset="1" stop-color="#050A18"/></linearGradient>
+</defs>
+
+<path d="M30 540 Q900 480 1770 540" stroke="#806A3C" stroke-width="2" fill="none" opacity=".55"/>
+<g transform="translate(1290 4) scale(.88 .96)">
+<g stroke="#D9B85D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+  <!-- hood and head -->
+  <path d="M250 55 C180 65 130 130 136 220 L155 270 L235 252 L310 272 L336 215 C350 125 315 75 250 55Z" fill="#101A34"/>
+  <path d="M151 197 Q230 150 322 195 L306 235 Q240 211 169 240Z" fill="#080F22"/>
+  <!-- eyes -->
+  <path d="M178 197 L226 188 L211 208 L175 215Z" fill="#E8D18A" stroke="none"/>
+  <path d="M264 188 L312 197 L315 215 L278 208Z" fill="#E8D18A" stroke="none"/>
+  <!-- beak / crow mask -->
+  <path d="M218 218 L250 236 L285 218 L266 267 L238 281 L222 256Z" fill="#080D1B"/>
+  <path d="M238 258 L262 260 L250 292Z" fill="#B99543" stroke="none"/>
+  <!-- shoulders and torso -->
+  <path d="M155 276 Q194 245 231 258 L250 286 L273 258 Q315 250 348 286 L377 414 L331 440 L310 350 L301 493 L192 493 L188 350 L164 440 L121 414Z" fill="#111B34"/>
+  <!-- armor panels -->
+  <path d="M161 292 L218 279 L239 333 L196 376 L144 357Z" fill="#202C49"/>
+  <path d="M284 280 L337 294 L359 359 L303 379 L263 333Z" fill="#202C49"/>
+  <path d="M218 287 L250 304 L282 287 L300 395 L250 430 L200 395Z" fill="#0A1227"/>
+  <path d="M201 403 L250 432 L299 403 L294 485 L206 485Z" fill="#18223B"/>
+  <!-- sash -->
+  <path d="M165 351 L319 431 L301 455 L150 376Z" fill="#C5A24D"/>
+  <path d="M280 418 L342 461 L320 485 L263 443Z" fill="#D9B85D"/>
+  <!-- legs -->
+  <path d="M205 480 L250 480 L239 590 L195 590Z" fill="#0B1328"/>
+  <path d="M255 480 L299 480 L321 590 L277 590Z" fill="#0B1328"/>
+  <path d="M190 573 L240 573 L235 615 L168 615Z" fill="#111B34"/>
+  <path d="M278 573 L326 573 L350 615 L282 615Z" fill="#111B34"/>
+  <!-- sword -->
+  <path d="M332 288 L426 80" fill="none" stroke="#D8DCE6" stroke-width="9"/>
+  <path d="M316 316 L349 330" fill="none" stroke="#C5A24D" stroke-width="12"/>
+</g>
+</g>
+<text x="95" y="300" font-family="Georgia,serif" font-size="180" font-weight="bold" letter-spacing="12" fill="url(#gold)">NINJA CROW</text>
+<text x="112" y="405" font-family="Georgia,serif" font-size="58" font-style="italic" letter-spacing="25" fill="#A9BBD4">SHADOW RISE</text>
+<path d="M110 455 H1120" stroke="#B99543" stroke-width="4"/>
+<text x="112" y="510" font-family="Georgia,serif" font-size="25" letter-spacing="8" fill="#D5C18A">RISE FROM THE SHADOWS</text>
+</svg>
