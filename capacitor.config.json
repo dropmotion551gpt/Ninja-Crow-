@@ -1,0 +1,7 @@
+{
+  "appId": "com.ninjacrow.game",
+  "appName": "Ninja Crow",
+  "webDir": "www",
+  "backgroundColor": "#0F172A",
+  "android": { "allowMixedContent": false }
+}
